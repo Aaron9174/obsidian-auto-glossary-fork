@@ -8,7 +8,7 @@ import {
 	getEnumFO,
 } from "./utils";
 import chokidar from "chokidar";
-import { EventName } from "chokidar/handler";
+import { EventName, EVENTS } from "chokidar/handler.js";
 import { AutoGlossarySettings } from "settings";
 
 /**
@@ -221,8 +221,7 @@ async function createText(
  */
 export function setupDirectoryWatcher(fullPath: string, relativeObsidianPath: string, indexFilename: string, settings: AutoGlossarySettings) {
 	const directoryWatcher = chokidar.watch(fullPath).on("all", async (event: EventName, path: string) => {
-		// TODO: use event enum
-		if (event == "add" || event == "unlink" || event == "change") {
+		if (event == EVENTS.ADD || event == EVENTS.UNLINK || event == EVENTS.CHANGE) {
 			// Indicates that the index file has been deleted
 			if (path.contains(indexFilename) && event == "unlink") {
 				// Unwatch the directory path
