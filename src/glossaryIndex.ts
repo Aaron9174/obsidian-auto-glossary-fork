@@ -223,7 +223,7 @@ export function setupDirectoryWatcher(fullPath: string, relativeObsidianPath: st
 	const directoryWatcher = chokidar.watch(fullPath).on("all", async (event: EventName, path: string) => {
 		if (event == EVENTS.ADD || event == EVENTS.UNLINK || event == EVENTS.CHANGE) {
 			// Indicates that the index file has been deleted
-			if (path.contains(indexFilename) && event == "unlink") {
+			if (path.contains(indexFilename) && event == EVENTS.UNLINK) {
 				// Unwatch the directory path
 				directoryWatcher.unwatch(fullPath);
 
