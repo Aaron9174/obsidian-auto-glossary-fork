@@ -12,6 +12,9 @@ export enum fileType {
 	gi = "glossaryIndex",
 }
 
+/** The plugin tag used to indicate files that have been made by the plugin */
+export const PLUGIN_TAG = "---\ntags: obsidian-auto-glossary\n---\n";
+
 /**
  * Enum to handle different orders
  */
@@ -204,7 +207,7 @@ export async function cleanFiles(
 	notesTFiles.forEach(async (file: TFile) => {
 		const fileContent: string = await vault.cachedRead(file);
 		// TODO: This tag should be a constant somewhere
-		if (!fileContent.includes("---\ntags: obsidian-auto-glossary\n---\n")) {
+		if (!fileContent.includes(PLUGIN_TAG)) {
 			cleanedNotes.push(file);
 		}
 	});

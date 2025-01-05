@@ -6,6 +6,7 @@ import {
 	sortFiles,
 	fileOrder,
 	getEnumFO,
+	PLUGIN_TAG,
 } from "./utils";
 import chokidar from "chokidar";
 import { EventName, EVENTS } from "chokidar/handler.js";
@@ -193,7 +194,7 @@ async function createText(
 		chosenFolder,
 		fileOrder
 	);
-	let text = "---\ntags: obsidian-auto-glossary\n---\n";
+	let text = PLUGIN_TAG;
 
 	switch (requestedFile) {
 		case fileType.g:
