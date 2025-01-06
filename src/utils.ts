@@ -3,9 +3,7 @@ import { DataAdapterWrapper } from "interfaces/DataAdapterWrapper";
 import { VaultWrapper } from "interfaces/VaultWrapper";
 import { TFile, FileSystemAdapter } from "obsidian";
 
-/**
- * Enum to handle different cases
- */
+/** Enum to handle different cases */
 export enum fileType {
 	i = "index",
 	g = "glossary",
@@ -15,9 +13,13 @@ export enum fileType {
 /** The plugin tag used to indicate files that have been made by the plugin */
 export const PLUGIN_TAG = "---\ntags: obsidian-auto-glossary\n---\n";
 
-/**
- * Enum to handle different orders
- */
+/** The DS store obsidian mac OS default filename */
+export const MAC_OS_DS_STORE_FILENAME = ".DS_Store";
+
+/** Default obsidian filename */
+export const OBSIDIAN_FILENAME = ".obsidian";
+
+/** Enum to handle different orders */
 export enum fileOrder {
 	default = "default",
 	mtime_new = "mtime_new",
@@ -38,7 +40,7 @@ export enum fileOrder {
 export async function getIndexFiles(adapter: FileSystemAdapter, path: string = "/"): Promise<Array<string>> {
 	const foundIndexPaths = [];
 	// TODO: This should find a base index file or glossary
-	const directoryList = await adapter.list(path);	
+	const directoryList = await adapter.list(path);
 
 	// Look for indexes in all user created folders, recursively
 	const userFolderNames = getUserCreatedFolders(directoryList.folders);
@@ -57,7 +59,7 @@ export async function getIndexFiles(adapter: FileSystemAdapter, path: string = "
 		}
 	}
 
-	return foundIndexPaths;	
+	return foundIndexPaths;
 }
 
 /**
@@ -92,8 +94,7 @@ function isIndexFile(filepath: string, folderPath: string): boolean {
  * TODO: Also, all of this logic for finding the index files should probably be extracted out to it's own file and class
  */
 function getUserCreatedFiles(fileList: Array<string>): Array<string> {
-	// TODO: Remove hardcoded value to constant
-	return fileList.filter((filename: string) => { return filename !== ".DS_Store"; })	;
+	return fileList.filter((filename: string) => { return filename !== MAC_OS_DS_STORE_FILENAME; });
 }
 
 /**
@@ -103,8 +104,7 @@ function getUserCreatedFiles(fileList: Array<string>): Array<string> {
  * TODO: All of this logic for finding the index files should probably be extracted out to it's own file and class
  */
 function getUserCreatedFolders(folderList: Array<string>): Array<string> {
-	// TODO: Remove hardcoded value to constant
-	return folderList.filter((folderName: string) => { return folderName !== ".obsidian"; });
+	return folderList.filter((folderName: string) => { return folderName !== OBSIDIAN_FILENAME; });
 }
 
 /**
@@ -202,11 +202,8 @@ export async function cleanFiles(
 	notesTFiles: TFile[]
 ): Promise<TFile[]> {
 	const cleanedNotes: TFile[] = [];
-
-	// TODO: Pretty sure this can just be done with a JS filter
 	notesTFiles.forEach(async (file: TFile) => {
 		const fileContent: string = await vault.cachedRead(file);
-		// TODO: This tag should be a constant somewhere
 		if (!fileContent.includes(PLUGIN_TAG)) {
 			cleanedNotes.push(file);
 		}
