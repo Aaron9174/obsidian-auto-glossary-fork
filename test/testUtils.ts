@@ -260,7 +260,7 @@ describe("cleanFiles", () => {
 
   it("avoids cleaning obsidian glossary files", async () => {
     const mockVault: SinonStubbedInstance<VaultMock> = createStubInstance(VaultMock);
-    mockVault.cachedRead.resolves("---\ntags: obsidian-auto-glossary\n---\n");
+    mockVault.cachedRead.resolves(utils.PLUGIN_TAG);
 
     const cleanedFiles: Array<TFile> = await utils.cleanFiles(mockVault, testFiles);
 
